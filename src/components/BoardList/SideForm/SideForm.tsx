@@ -67,7 +67,7 @@ const SideForm: FC<TSideFormProps> = ({ setIsFormOpen }) => {
           transform: `scale(${iconScale})`,
           transition: `transtorm 0,2 ease-in-out`,
         }}
-        onClick={handleClick}
+        onMouseDown={handleClick}
       />
     </div>
   );
