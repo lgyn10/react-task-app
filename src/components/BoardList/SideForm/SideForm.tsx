@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
+import { FiCheckCircle } from 'react-icons/fi';
 
-const SideForm = () => {
-  return <div>SideForm</div>;
+type TSideFormProps = {
+  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const SideForm: FC<TSideFormProps> = ({ setIsFormOpen }) => {
+  const [inputText, setInputText] = useState('');
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value);
+  };
+
+  const handleOnBlur = () => {
+    setIsFormOpen(false);
+  };
+  return (
+    <div>
+      <input
+        type='text'
+        placeholder='새로운 게시판 등록하기'
+        value={inputText}
+        onChange={handleChange}
+        onBlur={handleOnBlur}
+      />
+      <FiCheckCircle onClick={() => setIsFormOpen((prev) => !prev)} />
+    </div>
+  );
 };
 
 export default SideForm;
