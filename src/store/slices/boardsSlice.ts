@@ -10,6 +10,11 @@ type TAddBoardAction = {
   board: IBoard;
 };
 
+type TDeleteListAction = {
+  boardId: string;
+  listId: string;
+};
+
 const initialState: TBoardState = {
   modalActive: false,
   boardArray: [
@@ -66,6 +71,13 @@ const boardSlice = createSlice({
     addBoard: (state, { payload }: PayloadAction<TAddBoardAction>) => {
       state.boardArray.push(payload.board);
       // redux 툴킷 내부에서 immer라는 불변성 관리 라이브러리를 사용하기 때문에 push 메서드 사용이 안전
+    },
+    deleteList: (state, { payload }: PayloadAction<TDeleteListAction>) => {
+      state.boardArray = state.boardArray.map((board) =>
+        board.boardId === payload.boardId
+          ? { ...board, lists: board.lists.filter((list) => list.listId !== payload.listId) }
+          : board
+      );
     },
   },
 });
