@@ -22,7 +22,9 @@ const modalSlice = createSlice({
   name: 'modal',
   initialState,
   // reducers 안에는 action을 만들어주는 함수를 적어준다.
-  reducers: {},
+  reducers: {
+    // 여기서 선언하는 함수는 Actions이다.
+  },
 });
 
 export const modalReducer = modalSlice.reducer;
