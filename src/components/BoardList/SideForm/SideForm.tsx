@@ -1,5 +1,6 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
+import { icon, input, sideForm } from './SideForm.css';
 
 type TSideFormProps = {
   setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,6 +9,11 @@ type TSideFormProps = {
 
 const SideForm: FC<TSideFormProps> = ({ setIsFormOpen }) => {
   const [inputText, setInputText] = useState('');
+  const [iconScale, setIconScale] = useState(0);
+
+  useEffect(() => {
+    setIconScale(1);
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
@@ -16,9 +22,12 @@ const SideForm: FC<TSideFormProps> = ({ setIsFormOpen }) => {
     setIsFormOpen(false);
   };
 
+  const handleClick = () => {};
+
   return (
-    <div>
+    <div className={sideForm}>
       <input
+        className={input}
         autoFocus
         type='text'
         placeholder='새로운 게시판 등록하기'
@@ -26,7 +35,14 @@ const SideForm: FC<TSideFormProps> = ({ setIsFormOpen }) => {
         onChange={handleChange}
         onBlur={handleOnBlur}
       />
-      <FiCheckCircle onClick={() => setIsFormOpen((prev) => !prev)} />
+      <FiCheckCircle
+        className={icon}
+        style={{
+          transform: `scale(${iconScale})`,
+          transition: `transtorm 0,2 ease-in-out`,
+        }}
+        onClick={handleClick}
+      />
     </div>
   );
 };
