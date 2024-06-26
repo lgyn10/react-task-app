@@ -45,7 +45,8 @@ const List: FC<TListProps> = ({ list, boardId }) => {
           <Task taskName={task.taskName} taskDescription={task.taskDescription} boardId={boardId} index={idx} />
         </div>
       ))}
-      <ActionButton />
+      {/* 새로운 일 등록 버튼 */}
+      <ActionButton boardId={boardId} listId={list.listId} />
     </div>
   );
 };

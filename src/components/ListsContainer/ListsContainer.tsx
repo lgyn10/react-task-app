@@ -15,7 +15,8 @@ const ListsContainer: FC<TListsContainerProps> = ({ lists, boardId }) => {
       {lists.map((list) => (
         <List key={list.listId} list={list} boardId={boardId} />
       ))}
-      <ActionButton />
+      {/* 새로운 리스트 등록 버튼 */}
+      <ActionButton boardId={boardId} listId={''} list />
     </div>
   );
 };
