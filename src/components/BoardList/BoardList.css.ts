@@ -25,7 +25,6 @@ export const addButton = style({
   marginLeft: vars.spacing.big1,
   transition: '0.3s',
   ':hover': {
-    color: 'red',
     opacity: 0.8,
     transition: '0.3s',
     transform: 'scale(1.2)',
