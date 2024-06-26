@@ -1,6 +1,10 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
 import { icon, input, sideForm } from './SideForm.css';
+import { useTypedDispatch } from '../../../hooks/redux';
+import { addBoard } from '../../../store/slices/boardsSlice';
+import { v4 as uuidv4 } from 'uuid';
+import { addLog } from '../../../store/slices/loggerSlice';
 
 type TSideFormProps = {
   setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,6 +14,8 @@ type TSideFormProps = {
 const SideForm: FC<TSideFormProps> = ({ setIsFormOpen }) => {
   const [inputText, setInputText] = useState('');
   const [iconScale, setIconScale] = useState(0);
+
+  const dispatch = useTypedDispatch();
 
   useEffect(() => {
     setIconScale(1);
@@ -22,7 +28,27 @@ const SideForm: FC<TSideFormProps> = ({ setIsFormOpen }) => {
     setIsFormOpen(false);
   };
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    if (inputText) {
+      dispatch(
+        addBoard({
+          board: {
+            boardId: uuidv4(),
+            boardName: inputText,
+            lists: [],
+          },
+        })
+      );
+      dispatch(
+        addLog({
+          logId: uuidv4(),
+          logMessage: `게시판 등록 : ${inputText}`,
+          logAuthor: 'lgyn10',
+          logTimeStamp: String(Date.now()),
+        })
+      );
+    }
+  };
 
   return (
     <div className={sideForm}>
