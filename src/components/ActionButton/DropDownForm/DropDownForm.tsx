@@ -4,6 +4,7 @@ import { useTypedDispatch } from '../../../hooks/redux';
 import { addList, addTask } from '../../../store/slices/boardsSlice';
 import { v4 } from 'uuid';
 import { addLog } from '../../../store/slices/loggerSlice';
+import { button, buttons, close, input, listForm, taskForm } from './DropDownForm.css';
 
 type TDropButtonProps = {
   setIsFormOpen: Dispatch<SetStateAction<boolean>>;
@@ -61,17 +62,20 @@ const DropDownForm: FC<TDropButtonProps> = ({ setIsFormOpen, list, boardId, list
   };
 
   return (
-    <div>
+    <div className={list ? listForm : taskForm}>
       <textarea
+        className={input}
         value={text}
         autoFocus
         placeholder={FormPlaceHolder}
         onChange={handleTextChagne}
         onBlur={() => setIsFormOpen(false)}
       />
-      <div>
-        <button onMouseDown={handleButtonClick}>{buttonTitle}</button>
-        <FiXCircle />
+      <div className={buttons}>
+        <button className={button} onMouseDown={handleButtonClick}>
+          {buttonTitle}
+        </button>
+        <FiXCircle className={close} />
       </div>
     </div>
   );
