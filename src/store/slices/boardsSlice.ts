@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IBoard } from '../../types';
+import { IBoard, IList, ITask } from '../../types';
 
 type TBoardState = {
   modalActive: boolean;
@@ -13,6 +13,17 @@ type TAddBoardAction = {
 type TDeleteListAction = {
   boardId: string;
   listId: string;
+};
+
+type TAddListAction = {
+  boardId: string;
+  list: IList;
+};
+
+type TAddTaskAction = {
+  boardId: string;
+  listId: string;
+  task: ITask;
 };
 
 const initialState: TBoardState = {
@@ -70,6 +81,7 @@ const boardSlice = createSlice({
     // 여기서 선언하는 함수는 Actions이다.
     addBoard: (state, { payload }: PayloadAction<TAddBoardAction>) => {
       state.boardArray.push(payload.board);
+      // state.boardArray = [...state.boardArray, payload.board]; // OK
       // redux 툴킷 내부에서 immer라는 불변성 관리 라이브러리를 사용하기 때문에 push 메서드 사용이 안전
     },
     deleteList: (state, { payload }: PayloadAction<TDeleteListAction>) => {
@@ -82,7 +94,28 @@ const boardSlice = createSlice({
     setModalActive: (state, { payload }: PayloadAction<boolean>) => {
       state.modalActive = payload;
     },
+    addList: (state, { payload }: PayloadAction<TAddListAction>) => {
+      //! lists: board.lists.push(payload.list)?????????????????????????????????????
+      // js든, redux toolkit이든 push 메서드의 리턴값은 배열의 새로운 길이
+      state.boardArray.map(
+        (board) => (board.boardId === payload.boardId ? { ...board, lists: board.lists.push(payload.list) } : board)
+        // board.boardId === payload.boardId ? { ...board, lists: [...board.lists, payload.list] } : board
+      );
+    },
+    addTask: (state, { payload }: PayloadAction<TAddTaskAction>) => {
+      state.boardArray.map((board) =>
+        board.boardId === payload.boardId
+          ? {
+              ...board,
+              lists: board.lists.map((list) =>
+                //! tasks: list.tasks.push(payload.task)?????????????????????????????
+                list.listId === payload.listId ? { ...list, tasks: list.tasks.push(payload.task) } : list
+              ),
+            }
+          : board
+      );
+    },
   },
 });
-export const { addBoard, deleteList, setModalActive } = boardSlice.actions;
+export const { addBoard, deleteList, setModalActive, addList, addTask } = boardSlice.actions;
 export const boardsReducer = boardSlice.reducer;
