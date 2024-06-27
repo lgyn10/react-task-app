@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTypedSelector } from '../../hooks/redux';
 import { FiXCircle } from 'react-icons/fi';
-import Logitem from './Logitem/Logitem';
+import Logitem from './LogItem/LogItem';
 import { body, closeButton, header, modalWindow, title, wrapper } from './LoggerModal.css';
 
 type TLoggerModalProps = {
