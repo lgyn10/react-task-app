@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { FiXCircle } from 'react-icons/fi';
 import { useTypedDispatch, useTypedSelector } from '../../hooks/redux';
-import { setModalActive } from '../../store/slices/boardsSlice';
+import { deleteTask, setModalActive, updateTask } from '../../store/slices/boardsSlice';
+import { addLog } from '../../store/slices/loggerSlice';
+import { v4 } from 'uuid';
 
 const EditModal = () => {
   const editingState = useTypedSelector((state) => state.modal);
@@ -10,6 +12,51 @@ const EditModal = () => {
   const dispatch = useTypedDispatch();
 
   const handleCloseButton = () => {
+    dispatch(setModalActive(false));
+  };
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setModalData({ ...modalData, task: { ...modalData.task, taskName: e.target.value } });
+  };
+  const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setModalData({ ...modalData, task: { ...modalData.task, taskDescription: e.target.value } });
+  };
+  const handleAuthorChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setModalData({ ...modalData, task: { ...modalData.task, taskOwner: e.target.value } });
+  };
+  const handleUpdate = () => {
+    dispatch(
+      updateTask({
+        boardId: editingState.boardId,
+        listId: editingState.listId,
+        task: modalData.task,
+      })
+    );
+    dispatch(
+      addLog({
+        logId: v4(),
+        logMessage: `할일 수정하기 : ${editingState.task.taskName}`,
+        logAuthor: 'lgyn10',
+        logTimeStamp: String(Date.now()),
+      })
+    );
+    dispatch(setModalActive(false));
+  };
+  const handleDelete = () => {
+    dispatch(
+      deleteTask({
+        boardId: editingState.boardId,
+        listId: editingState.listId,
+        taskId: modalData.task.taskId,
+      })
+    );
+    dispatch(
+      addLog({
+        logId: v4(),
+        logMessage: `할일 삭제하기 : ${editingState.task.taskName}`,
+        logAuthor: 'lgyn10',
+        logTimeStamp: String(Date.now()),
+      })
+    );
     dispatch(setModalActive(false));
   };
 
@@ -22,14 +69,14 @@ const EditModal = () => {
 
           <FiXCircle onClick={handleCloseButton} />
           <div>제목</div>
-          <input type='text' value={modalData.task.taskName} />
+          <input type='text' value={modalData.task.taskName} onChange={handleNameChange} />
           <div>설명</div>
-          <input type='text' value={modalData.task.taskDescription} />
+          <input type='text' value={modalData.task.taskDescription} onChange={handleDescriptionChange} />
           <div>생성한 사람</div>
-          <input type='text' value={modalData.task.taskOwner} />
+          <input type='text' value={modalData.task.taskOwner} onChange={handleAuthorChange} />
           <div>
-            <button>할 일 수정하기</button>
-            <button>할 일 삭제하기</button>
+            <button onClick={handleUpdate}>할 일 수정하기</button>
+            <button onClick={handleDelete}>할 일 삭제하기</button>
           </div>
         </div>
       </div>
