@@ -5,7 +5,7 @@ import ListsContainer from './components/ListsContainer/ListsContainer';
 import { useTypedSelector } from './hooks/redux';
 
 function App() {
-  const [activeBoardId, setActiveBoardId] = useState('board-0');
+  const [activeBoardId, setActiveBoardId] = useState('board-1');
 
   const boards = useTypedSelector((state) => state.boards.boardArray);
   const getActiveBoard = boards.filter((board) => board.boardId === activeBoardId)[0];

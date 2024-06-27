@@ -19,41 +19,41 @@ const initialState: TBoardState = {
   modalActive: false,
   boardArray: [
     {
-      boardId: 'board-0',
+      boardId: 'board-1',
       boardName: '첫 번째 게시물',
       lists: [
         {
-          listId: 'list-0',
-          listName: 'List 1',
+          listId: 'list-1',
+          listName: '학습 내용',
           tasks: [
             {
-              taskId: 'task-0',
-              taskName: 'Task 1',
-              taskDescription: 'Description',
+              taskId: 'task-1',
+              taskName: 'LMS 강의 듣기',
+              taskDescription: '데브 코스 강의',
               taskOwner: 'lgyn10',
             },
             {
-              taskId: 'task-1',
-              taskName: 'Task 2',
-              taskDescription: 'Description',
+              taskId: 'task-2',
+              taskName: '리액트 스터디 준비',
+              taskDescription: '면접 질문 준비',
               taskOwner: 'lgyn10',
             },
           ],
         },
         {
-          listId: 'list-1',
-          listName: 'List 2',
+          listId: 'list-2',
+          listName: '프로젝트 할 일',
           tasks: [
             {
-              taskId: 'task-2',
-              taskName: 'Task 3',
-              taskDescription: 'Description',
+              taskId: 'task-3',
+              taskName: '리드미 작성',
+              taskDescription: '기획 반영한 readme.md 작성',
               taskOwner: 'lgyn10',
             },
             {
-              taskId: 'task-3',
-              taskName: 'Task 4',
-              taskDescription: 'Description',
+              taskId: 'task-4',
+              taskName: '크롬 API 테스트',
+              taskDescription: '북마크 가져오는지 확인',
               taskOwner: 'lgyn10',
             },
           ],
