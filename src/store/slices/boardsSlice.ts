@@ -26,6 +26,12 @@ type TAddTaskAction = {
   task: ITask;
 };
 
+type TDeleteTaskAction = {
+  boardId: string;
+  listId: string;
+  taskId: string;
+};
+
 const initialState: TBoardState = {
   modalActive: false,
   boardArray: [
@@ -115,7 +121,44 @@ const boardSlice = createSlice({
           : board
       );
     },
+    //! Modal에서 쓰는 버튼 이벤트
+    updateTask: (state, { payload }: PayloadAction<TAddTaskAction>) => {
+      state.boardArray = state.boardArray.map((board) => {
+        return board.boardId === payload.boardId
+          ? {
+              ...board,
+              lists: board.lists.map((list) => {
+                return list.listId === payload.listId
+                  ? {
+                      ...list,
+                      tasks: list.tasks.map((task) => {
+                        return task.taskId === payload.task.taskId ? payload.task : task;
+                      }),
+                    }
+                  : list;
+              }),
+            }
+          : board;
+      });
+    },
+    deleteTask: (state, { payload }: PayloadAction<TDeleteTaskAction>) => {
+      state.boardArray = state.boardArray.map((board) => {
+        return board.boardId === payload.boardId
+          ? {
+              ...board,
+              lists: board.lists.map((list) =>
+                list.listId === payload.listId
+                  ? {
+                      ...list,
+                      tasks: list.tasks.filter((task) => task.taskId !== payload.taskId),
+                    }
+                  : list
+              ),
+            }
+          : board;
+      });
+    },
   },
 });
-export const { addBoard, deleteList, setModalActive, addList, addTask } = boardSlice.actions;
+export const { addBoard, deleteList, setModalActive, addList, addTask, updateTask, deleteTask } = boardSlice.actions;
 export const boardsReducer = boardSlice.reducer;
