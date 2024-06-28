@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { v4 } from 'uuid';
 import { appContainer, board, buttons, deleteBoardButton, loggerButton } from './App.css';
 import BoardList from './components/BoardList/BoardList';
-import ListsContainer from './components/ListsContainer/ListsContainer';
-import { useTypedDispatch, useTypedSelector } from './hooks/redux';
 import EditModal from './components/EditModal/EditModal';
+import ListsContainer from './components/ListsContainer/ListsContainer';
 import LoggerModal from './components/LoggerModal/LoggerModal';
+import { useTypedDispatch, useTypedSelector } from './hooks/redux';
 import { deleteBoard } from './store/slices/boardsSlice';
 import { addLog } from './store/slices/loggerSlice';
-import { v4 } from 'uuid';
 
 function App() {
   const [isLoggerOpen, setIsLoggerOpen] = useState(false);
@@ -42,6 +43,8 @@ function App() {
     }
   };
 
+  const handleDragEnd = (result: DropResult) => {};
+
   return (
     <div className={appContainer}>
       {/* //! 로거 모달창 구현 */}
@@ -50,7 +53,9 @@ function App() {
       {modalActive ? <EditModal /> : null}
       <BoardList activeBoardId={activeBoardId} setActiveBoardId={setActiveBoardId} />
       <div className={board}>
-        <ListsContainer lists={lists} boardId={getActiveBoard.boardId} />
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <ListsContainer lists={lists} boardId={getActiveBoard.boardId} />
+        </DragDropContext>
       </div>
       <div className={buttons}>
         <button className={deleteBoardButton} onClick={handleDeleteBoard}>
