@@ -36,6 +36,15 @@ type TDeleteBoardAction = {
   boardId: string;
 };
 
+type TSortAction = {
+  boardIdx: number;
+  droppableIdStart: string;
+  droppableIdEnd: string;
+  droppableIndexStart: number;
+  droppableIndexEnd: number;
+  draggableId: string;
+};
+
 const initialState: TBoardState = {
   modalActive: false,
   boardArray: [
@@ -167,8 +176,10 @@ const boardSlice = createSlice({
           : board;
       });
     },
+    //! DragAndDrop 기능 위한 함수
+    sort: (state, { payload }: PayloadAction<TSortAction>) => {},
   },
 });
-export const { addBoard, deleteList, setModalActive, addList, addTask, updateTask, deleteTask, deleteBoard } =
+export const { addBoard, deleteList, setModalActive, addList, addTask, updateTask, deleteTask, deleteBoard, sort } =
   boardSlice.actions;
 export const boardsReducer = boardSlice.reducer;
