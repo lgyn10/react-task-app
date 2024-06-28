@@ -178,34 +178,34 @@ const boardSlice = createSlice({
     },
     //! DragAndDrop 기능 위한 함수
     sort: (state, { payload }: PayloadAction<TSortAction>) => {
+      const { boardIdx, droppableIdStart, droppableIdEnd, droppableIndexStart, droppableIndexEnd, draggableId } =
+        payload;
       // 1. same list
-      if (payload.droppableIdStart === payload.droppableIdEnd) {
+      if (droppableIdStart === droppableIdEnd) {
         // 맨 뒤에 !를 붙임으로 list는 존재함을 명시 :  non-null assertion operator
-        const list = state.boardArray[payload.boardIdx].lists.find((list) => list.listId === payload.droppableIdStart)!;
+        const list = state.boardArray[boardIdx].lists.find((list) => list.listId === droppableIdStart)!;
         // 변경시키는 요소를 배열에서 지워주고, 그 요소를 리턴값으로 받는다.
-        const [draggingElement] = list.tasks.splice(payload.droppableIndexStart, 1);
+        const [draggingElement] = list.tasks.splice(droppableIndexStart, 1);
         list.tasks = [
-          ...list.tasks.slice(0, payload.droppableIndexEnd),
+          ...list.tasks.slice(0, droppableIndexEnd),
           draggingElement,
-          ...list.tasks.slice(payload.droppableIndexEnd),
+          ...list.tasks.slice(droppableIndexEnd),
         ];
         return;
       }
       // 2. other list
-      if (payload.droppableIdStart !== payload.droppableIdEnd) {
+      if (droppableIdStart !== droppableIdEnd) {
         // 옮길 요소를 가지고 있는 리스트
-        const startList = state.boardArray[payload.boardIdx].lists.find(
-          (list) => list.listId === payload.droppableIdStart
-        )!; // ! : non-null assertion operator
-        const [draggingElement] = startList.tasks.splice(payload.droppableIndexStart, 1);
+        //. ! : non-null assertion operator
+        const startList = state.boardArray[boardIdx].lists.find((list) => list.listId === droppableIdStart)!;
+        const [draggingElement] = startList.tasks.splice(droppableIndexStart, 1);
         // 옮겨질 요소를 가질 리스트
-        const endList = state.boardArray[payload.boardIdx].lists.find(
-          (list) => list.listId === payload.droppableIdEnd
-        )!; // ! : non-null assertion operator
+        //. ! : non-null assertion operator
+        const endList = state.boardArray[boardIdx].lists.find((list) => list.listId === droppableIdEnd)!;
         endList.tasks = [
-          ...endList.tasks.slice(0, payload.droppableIndexEnd),
+          ...endList.tasks.slice(0, droppableIndexEnd),
           draggingElement,
-          ...endList.tasks.slice(payload.droppableIndexEnd),
+          ...endList.tasks.slice(droppableIndexEnd),
         ];
         return;
       }
