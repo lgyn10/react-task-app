@@ -32,6 +32,10 @@ type TDeleteTaskAction = {
   taskId: string;
 };
 
+type TDeleteBoardAction = {
+  boardId: string;
+};
+
 const initialState: TBoardState = {
   modalActive: false,
   boardArray: [
@@ -85,10 +89,26 @@ const boardSlice = createSlice({
   initialState,
   reducers: {
     // 여기서 선언하는 함수는 Actions이다.
+    //! Board 관련 액션
     addBoard: (state, { payload }: PayloadAction<TAddBoardAction>) => {
       state.boardArray.push(payload.board);
       // state.boardArray = [...state.boardArray, payload.board]; // OK
       // redux 툴킷 내부에서 immer라는 불변성 관리 라이브러리를 사용하기 때문에 push 메서드 사용이 안전
+    },
+    deleteBoard: (state, { payload }: PayloadAction<TDeleteBoardAction>) => {
+      state.boardArray = state.boardArray.filter((board) => board.boardId !== payload.boardId);
+    },
+    setModalActive: (state, { payload }: PayloadAction<boolean>) => {
+      state.modalActive = payload;
+    },
+    //! List 관련 액션
+    addList: (state, { payload }: PayloadAction<TAddListAction>) => {
+      //| lists: board.lists.push(payload.list)?????????????????????????????????????
+      // js든, redux toolkit이든 push 메서드의 리턴값은 배열의 새로운 길이
+      state.boardArray.map(
+        (board) => (board.boardId === payload.boardId ? { ...board, lists: board.lists.push(payload.list) } : board)
+        // board.boardId === payload.boardId ? { ...board, lists: [...board.lists, payload.list] } : board
+      );
     },
     deleteList: (state, { payload }: PayloadAction<TDeleteListAction>) => {
       state.boardArray = state.boardArray.map((board) =>
@@ -97,31 +117,20 @@ const boardSlice = createSlice({
           : board
       );
     },
-    setModalActive: (state, { payload }: PayloadAction<boolean>) => {
-      state.modalActive = payload;
-    },
-    addList: (state, { payload }: PayloadAction<TAddListAction>) => {
-      //! lists: board.lists.push(payload.list)?????????????????????????????????????
-      // js든, redux toolkit이든 push 메서드의 리턴값은 배열의 새로운 길이
-      state.boardArray.map(
-        (board) => (board.boardId === payload.boardId ? { ...board, lists: board.lists.push(payload.list) } : board)
-        // board.boardId === payload.boardId ? { ...board, lists: [...board.lists, payload.list] } : board
-      );
-    },
+    //! Task 관련 액션
     addTask: (state, { payload }: PayloadAction<TAddTaskAction>) => {
       state.boardArray.map((board) =>
         board.boardId === payload.boardId
           ? {
               ...board,
               lists: board.lists.map((list) =>
-                //! tasks: list.tasks.push(payload.task)?????????????????????????????
+                //| tasks: list.tasks.push(payload.task)?????????????????????????????
                 list.listId === payload.listId ? { ...list, tasks: list.tasks.push(payload.task) } : list
               ),
             }
           : board
       );
     },
-    //! Modal에서 쓰는 버튼 이벤트
     updateTask: (state, { payload }: PayloadAction<TAddTaskAction>) => {
       state.boardArray = state.boardArray.map((board) => {
         return board.boardId === payload.boardId
@@ -160,5 +169,6 @@ const boardSlice = createSlice({
     },
   },
 });
-export const { addBoard, deleteList, setModalActive, addList, addTask, updateTask, deleteTask } = boardSlice.actions;
+export const { addBoard, deleteList, setModalActive, addList, addTask, updateTask, deleteTask, deleteBoard } =
+  boardSlice.actions;
 export const boardsReducer = boardSlice.reducer;
