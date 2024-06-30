@@ -11,6 +11,7 @@ import { deleteBoard, sort } from './store/slices/boardsSlice';
 import { addLog } from './store/slices/loggerSlice';
 
 function App() {
+  // 배포 테스트 주석
   const [isLoggerOpen, setIsLoggerOpen] = useState(false);
   const [activeBoardId, setActiveBoardId] = useState('board-1');
 
