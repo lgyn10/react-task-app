@@ -1,9 +1,12 @@
-import React, { FC, useState } from 'react';
-import { useTypedSelector } from '../../hooks/redux';
-import SideForm from './SideForm/SideForm';
-import { FiPlusCircle } from 'react-icons/fi';
-import { addButton, addSection, boardItem, boardItemActive, container, title } from './BoardList.css';
 import clsx from 'clsx';
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import React, { FC, useState } from 'react';
+import { FiPlusCircle } from 'react-icons/fi';
+import { GoSignIn, GoSignOut } from 'react-icons/go';
+import { app } from '../../firebase';
+import { useTypedSelector } from '../../hooks/redux';
+import { addButton, addSection, boardItem, boardItemActive, container, title } from './BoardList.css';
+import SideForm from './SideForm/SideForm';
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -22,6 +25,16 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
     // setTimeout(() => {
     //   inputRef.current?.focus();
     // }, 0);
+  };
+
+  // 로그인 관련
+  const [isLogin, setIsLogin] = useState(false);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const handleLogin = () => {
+    signInWithPopup(auth, provider).then((userCredential) => {
+      console.log(userCredential);
+    });
   };
 
   return (
@@ -51,6 +64,7 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
         ) : (
           <FiPlusCircle className={addButton} onClick={handleClick} />
         )}
+        {isLogin ? <GoSignOut className={addButton} /> : <GoSignIn className={addButton} onClick={handleLogin} />}
       </div>
     </div>
   );
