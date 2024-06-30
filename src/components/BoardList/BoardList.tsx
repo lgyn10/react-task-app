@@ -5,6 +5,7 @@ import { FiPlusCircle } from 'react-icons/fi';
 import { GoSignIn, GoSignOut } from 'react-icons/go';
 import { app } from '../../firebase';
 import { useTypedDispatch, useTypedSelector } from '../../hooks/redux';
+import { useAuth } from '../../hooks/userAuth';
 import { setUser } from '../../store/slices/userSlice';
 import { addButton, addSection, boardItem, boardItemActive, container, title } from './BoardList.css';
 import SideForm from './SideForm/SideForm';
@@ -29,8 +30,7 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
   };
 
   // 로그인 관련
-  const user = useTypedSelector((state) => state.user.email);
-  const [isLogin, setIsLogin] = useState(user);
+  const { isAuth } = useAuth();
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
   const dispatch = useTypedDispatch();
@@ -44,7 +44,6 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
             id: userCredential.user.uid,
           })
         );
-        setIsLogin(userCredential.user.email!);
       })
       .catch((e) => {
         console.log(e);
@@ -79,7 +78,7 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
         ) : (
           <FiPlusCircle className={addButton} onClick={handleClick} />
         )}
-        {isLogin ? (
+        {isAuth ? (
           <GoSignOut className={addButton} onClick={handleLogout} />
         ) : (
           <GoSignIn className={addButton} onClick={handleLogin} />
