@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { ILogItem } from '../../../types';
-import { author, date, logItemWrap, message } from './LogItem.css';
+import { author, date, logItemWrap, message } from './Logitem.css';
 
 type TLogItemProps = {
   logItem: ILogItem;
 };
 
-const LogItem: FC<TLogItemProps> = ({ logItem }) => {
+const Logitem: FC<TLogItemProps> = ({ logItem }) => {
   const timeOffset = new Date(Date.now() - Number(logItem.logTimeStamp));
   console.log(timeOffset);
   console.log(timeOffset.getMinutes());
@@ -31,4 +31,4 @@ const LogItem: FC<TLogItemProps> = ({ logItem }) => {
   );
 };
 
-export default LogItem;
+export default Logitem;

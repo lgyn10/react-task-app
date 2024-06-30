@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { FiXCircle } from 'react-icons/fi';
 import { useTypedSelector } from '../../hooks/redux';
-
+import Logitem from './LogItem/Logitem';
 import { body, closeButton, header, modalWindow, title, wrapper } from './LoggerModal.css';
-import LogItem from './LogItem/LogItem';
 
 type TLoggerModalProps = {
   setIsLoggerOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +20,7 @@ const LoggerModal: FC<TLoggerModalProps> = ({ setIsLoggerOpen }) => {
         </div>
         <div className={body}>
           {logs.map((log) => {
-            return <LogItem key={log.logId} logItem={log} />;
+            return <Logitem key={log.logId} logItem={log} />;
           })}
         </div>
       </div>
