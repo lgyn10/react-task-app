@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from 'firebase/auth';
 import React, { FC, useState } from 'react';
 import { FiPlusCircle } from 'react-icons/fi';
 import { GoSignIn, GoSignOut } from 'react-icons/go';
 import { app } from '../../firebase';
 import { useTypedDispatch, useTypedSelector } from '../../hooks/redux';
 import { useAuth } from '../../hooks/userAuth';
-import { setUser } from '../../store/slices/userSlice';
+import { removeUser, setUser } from '../../store/slices/userSlice';
 import { addButton, addSection, boardItem, boardItemActive, container, title } from './BoardList.css';
 import SideForm from './SideForm/SideForm';
 
@@ -45,11 +45,16 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, setActiveBoardId }) => 
           })
         );
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch((e) => console.log(e));
   };
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        console.log('signOut');
+        dispatch(removeUser());
+      })
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div className={container}>
