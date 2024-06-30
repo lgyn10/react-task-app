@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { FiXCircle } from 'react-icons/fi';
 import { useTypedSelector } from '../../hooks/redux';
-import Logitem from './LogItem/Logitem';
 import { body, closeButton, header, modalWindow, title, wrapper } from './LoggerModal.css';
+import Logitem from './Logitem/Logitem';
 
 type TLoggerModalProps = {
   setIsLoggerOpen: React.Dispatch<React.SetStateAction<boolean>>;
